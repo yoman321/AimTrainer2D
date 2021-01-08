@@ -54,3 +54,8 @@ task createFolders(description: 'Creates the source folders if they do not exist
         }
     }
 }
+apply plugin: 'java'
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
