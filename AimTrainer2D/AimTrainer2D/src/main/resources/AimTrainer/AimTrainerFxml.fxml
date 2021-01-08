@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane id="AnchorPane" prefHeight="695.0" prefWidth="883.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AimTrainer.AimTrainerController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AimTrainer.AimTrainerController">
     <stylesheets>
         <URL value="@/styles/AimTrainerCSS.css" />
     </stylesheets>
    <children>
-      <Pane fx:id="pane" layoutX="6.0" prefHeight="695.0" prefWidth="883.0">
+      <Pane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0">
          <children>
-            <Button fx:id="button" layoutX="431.0" layoutY="326.0" mnemonicParsing="false" onAction="#handleStartButton" text="Button" />
+            <Button fx:id="button" layoutX="274.0" layoutY="188.0" mnemonicParsing="false" onAction="#handleStartButton" text="Button" />
          </children>
       </Pane>
    </children>

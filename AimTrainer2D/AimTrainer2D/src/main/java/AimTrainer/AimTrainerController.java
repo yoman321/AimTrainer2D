@@ -24,25 +24,26 @@ public class AimTrainerController{
     
     //Create variables
     @FXML private Pane pane;
-    @FXML private Button button;
-    ExecutorService executor = Executors.newFixedThreadPool(5);
+    ExecutorService executor = Executors.newFixedThreadPool(2);
     private DotsAnimation dotsAmimation = new DotsAnimation();
-
+    
     
     //Start Trainer Button
     public void handleStartButton(){
+       
         executor.execute(new DotsAnimationTask());
-        
         executor.shutdown();
         
     
     }
     
+    //Circle animation task
     private class DotsAnimationTask implements Runnable{
         @Override
         public void run(){
             try{
                 Platform.runLater(() -> dotsAmimation.animationEffect());
+                Thread.sleep(100);
             }
             catch(Exception ex){
                 ex.getStackTrace();
@@ -57,24 +58,68 @@ public class AimTrainerController{
         private Screen screen = Screen.getPrimary();
         private Rectangle2D bounds = screen.getVisualBounds();
         private final double MAX_RADIUS = 45;
+        private double radius = 0;
         
+        //Circle animation method
         public synchronized void animationEffect(){
+            
+            //Create circle
             double xPos = ThreadLocalRandom.current().nextDouble(45, bounds.getWidth()-45);
             double yPos = ThreadLocalRandom.current().nextDouble(45, bounds.getHeight()-45);
-            Circle circle = new Circle(xPos, yPos, MAX_RADIUS);
+            Circle circle = new Circle(xPos, yPos, radius);
             
             
-            FadeTransition ft = new FadeTransition(Duration.millis(3000), circle);
-            ft.setFromValue(0);
-            ft.setToValue(1);
-            ft.setCycleCount(Timeline.INDEFINITE);
-            ft.setAutoReverse(true); 
-            ft.play();
-            System.out.println("something");
+            //Create animation
+            new Thread(new Runnable() {
+                @Override
+                public void run(){
+                    try{
+                        while (radius < MAX_RADIUS){
+                            radius += 0.3;
+                            Platform.runLater(() -> circle.setRadius(radius));
+                            Thread.sleep(50);
+                        }
+                        while (radius > 0){
+                            radius -= 0.5;
+                            Platform.runLater(() -> circle.setRadius(radius));
+                            Thread.sleep(50);
+                        }
+                    }
+                    catch(InterruptedException ex){
+                        ex.getStackTrace();
+                    }
+                }
+            }).start();
+            
+//            new Thread(new Runnable(){
+//                @Override
+//                public void run(){
+//                    try{
+//                        while (radius > 0){
+//                            radius -= 0.5;
+//                            Platform.runLater(() -> circle.setRadius(radius));
+//                            Thread.sleep(50);
+//                        }
+//                    }
+//                    catch(InterruptedException ex){
+//                        ex.getStackTrace();
+//                    }
+//                }
+//            }).start();
+            
+            pane.getChildren().add(circle);
+            
+//            FadeTransition ft = new FadeTransition(Duration.millis(3000), circle);
+//            ft.setFromValue(0);
+//            ft.setToValue(1);
+//            ft.setCycleCount(Timeline.INDEFINITE);
+//            ft.setAutoReverse(true); 
+//            ft.play();
+//            System.out.println("something");
             
           
         
-            pane.getChildren().add(circle);
+            
         }
     }
 }
