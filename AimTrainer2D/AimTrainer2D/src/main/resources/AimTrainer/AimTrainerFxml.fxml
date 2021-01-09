@@ -16,7 +16,8 @@
    <children>
       <Pane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0">
          <children>
-            <Button fx:id="button" layoutX="274.0" layoutY="188.0" mnemonicParsing="false" onAction="#handleStartButton" text="Button" />
+            <Button fx:id="button" layoutX="248.0" layoutY="188.0" mnemonicParsing="false" onAction="#handleStartButton" text="Start" />
+            <Button fx:id="handleStopButton" layoutX="327.0" layoutY="188.0" mnemonicParsing="false" text="Stop" />
          </children>
       </Pane>
    </children>
