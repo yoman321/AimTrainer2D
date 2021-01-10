@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.application.Platform;
 import static java.lang.System.out;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 /**
  *
  * @author luoph
@@ -26,18 +27,24 @@ public class AimTrainerController{
     
     //Create variables
     @FXML private Pane pane;
-    int clickedCount = 0;
-    int radiusArrayCount = 0;
-    ScheduledExecutorService executor = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
-    private DotsAnimation dotsAmimation = new DotsAnimation();
+    private int clickedCount = 0;
+    private int radiusArrayCount = 0;
+    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+    private ExecutorService stopExecutor = Executors.newFixedThreadPool(1);
+    private DotsAnimation dotsAnimation = new DotsAnimation();
     private ArrayList<Double> cordsArray = new ArrayList<>();
+    private boolean running = true;
     
-    //Start Trainer Button
+    //Start trainer Button
     public void handleStartButton(){
-        executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, 2, TimeUnit.SECONDS);   
+
+        executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, 5, TimeUnit.SECONDS);   
     }
     
-    public void handleStopbutton(){
+    //Stop trainer button
+    public void handleStopButton(){
+        out.println("something");//test
+        running = false;
         executor.shutdownNow();
     }
     
@@ -46,11 +53,11 @@ public class AimTrainerController{
         @Override
         public void run(){
             try{
-                Platform.runLater(() -> dotsAmimation.animationEffect());
-                Thread.sleep(100);
+                Platform.runLater(() -> dotsAnimation.animationEffect());
             }
             catch(Exception ex){
                 ex.getStackTrace();
+                
             }
         }
            
@@ -66,6 +73,7 @@ public class AimTrainerController{
         private boolean avCords = false;
         double xPos = ThreadLocalRandom.current().nextDouble(45, bounds.getWidth()-45);
         double yPos = ThreadLocalRandom.current().nextDouble(45, bounds.getHeight()-45);
+        private Thread thread = new Thread();
         
         //Circle animation method
         public synchronized void animationEffect(){
@@ -98,27 +106,32 @@ public class AimTrainerController{
             pane.getChildren().add(circle);
             
             //Create animation
-            new Thread(new Runnable() {
+            thread = new Thread(new Runnable() {
                 @Override
-                public void run(){
-                    
+                public void run(){     
                     try{
                         double radius = 0;
-                        while (radius < MAX_RADIUS){
+                        while ((radius < MAX_RADIUS) && running){
                             radius += 0.3;
                             out.println(radius); //test
                             final double finalRadius = radius;
                             Platform.runLater(() -> circle.setRadius(finalRadius));
                             Thread.sleep(50);
                         }
-                        while (radius> 0){
+                        while ((radius > 0) && running){
                             radius -= 0.3;
                             final double finalRadius = radius;
                             Platform.runLater(() -> circle.setRadius(finalRadius));
                             Thread.sleep(50);
                         }
+                        //Check if stop button has been clicked
+                        if (!running){
+                            thread.interrupt();
+                            out.println("interrupt");
+                        }
                         //Remove circle and cords if target shrink to 0
-                        if (radius == 0){
+                        if (radius <= 0){
+                            out.println("exit");
                             pane.getChildren().remove(circle);
                             for (int i=0, j=i=1; i<cordsArray.size(); i+=2){
                                 if (cordsArray.get(i)==xPos && cordsArray.get(j)==yPos){
@@ -132,13 +145,14 @@ public class AimTrainerController{
                         ex.getStackTrace();
                     }
                 }
-            }).start();
+            });
+            thread.start();
             
             //Make target disappear when clicked and increment clickedCount
-//            circle.setOnMousePressed(e -> {
-//                pane.getChildren().remove(circle);
-//                clickedCount++;
-//            });   
+            circle.setOnMousePressed(e -> {
+                pane.getChildren().remove(circle);
+                clickedCount++;
+            });   
             
         }
         
