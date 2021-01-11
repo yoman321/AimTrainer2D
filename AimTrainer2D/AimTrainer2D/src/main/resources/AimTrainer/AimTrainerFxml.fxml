@@ -2,6 +2,8 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
@@ -12,8 +14,15 @@
    <children>
       <Pane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0">
          <children>
-            <Button fx:id="button" layoutX="248.0" layoutY="188.0" mnemonicParsing="false" onAction="#handleStartButton" text="Start" />
-            <Button layoutX="327.0" layoutY="188.0" mnemonicParsing="false" onAction="#handleStopButton" text="Stop" />
+            <Button layoutX="326.0" layoutY="176.0" mnemonicParsing="false" onAction="#handleStopBtn" text="Stop" />
+            <ButtonBar layoutX="35.0" layoutY="168.0" prefHeight="40.0" prefWidth="200.0">
+              <buttons>
+                <Button mnemonicParsing="false" onAction="#handleEasyBtn" text="Easy" />
+                  <Button mnemonicParsing="false" onAction="#handleMediumBtn" text="Medium" />
+                  <Button mnemonicParsing="false" onAction="#handleHardBtn" text="Hard" />
+              </buttons>
+            </ButtonBar>
+            <TextField fx:id="counter" layoutX="64.0" layoutY="136.0" />
          </children>
       </Pane>
    </children>

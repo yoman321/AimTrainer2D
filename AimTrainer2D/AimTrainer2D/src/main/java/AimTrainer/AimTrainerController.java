@@ -19,6 +19,7 @@ import javafx.application.Platform;
 import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
+import javafx.scene.control.TextField;
 /**
  *
  * @author luoph
@@ -27,6 +28,7 @@ public class AimTrainerController{
     
     //Create variables
     @FXML private Pane pane;
+    @FXML private TextField counter;
     private int clickedCount = 0;
     private int radiusArrayCount = 0;
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
@@ -34,15 +36,28 @@ public class AimTrainerController{
     private DotsAnimation dotsAnimation = new DotsAnimation();
     private ArrayList<Double> cordsArray = new ArrayList<>();
     private boolean running = true;
+    private int threadDelayTime = 0;
     
-    //Start trainer Button
-    public void handleStartButton(){
-
-        executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, 5, TimeUnit.SECONDS);   
+    //Initialize values
+    public void initialize(){
+        counter.setEditable(false);
+    }
+    //Trainer modes buttons
+    public void handleEasyBtn(){
+        threadDelayTime = 3;
+        executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, threadDelayTime, TimeUnit.SECONDS);   
+    }
+    public void handleMediumBtn(){
+        threadDelayTime = 2;
+        executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, threadDelayTime, TimeUnit.SECONDS);   
+    }
+    public void handleHardBtn(){
+        threadDelayTime = 1;
+        executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, threadDelayTime, TimeUnit.SECONDS);   
     }
     
     //Stop trainer button
-    public void handleStopButton(){
+    public void handleStopBtn(){
         out.println("something");//test
         running = false;
         executor.shutdownNow();
@@ -116,13 +131,13 @@ public class AimTrainerController{
                             out.println(radius); //test
                             final double finalRadius = radius;
                             Platform.runLater(() -> circle.setRadius(finalRadius));
-                            Thread.sleep(50);
+                            Thread.sleep(35);
                         }
                         while ((radius > 0) && running){
                             radius -= 0.3;
                             final double finalRadius = radius;
                             Platform.runLater(() -> circle.setRadius(finalRadius));
-                            Thread.sleep(50);
+                            Thread.sleep(35);
                         }
                         //Check if stop button has been clicked
                         if (!running){
@@ -152,6 +167,7 @@ public class AimTrainerController{
             circle.setOnMousePressed(e -> {
                 pane.getChildren().remove(circle);
                 clickedCount++;
+                counter.setText(String.valueOf(clickedCount));
             });   
             
         }
