@@ -14,15 +14,19 @@
    <children>
       <Pane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0">
          <children>
-            <Button layoutX="326.0" layoutY="176.0" mnemonicParsing="false" onAction="#handleStopBtn" text="Stop" />
-            <ButtonBar layoutX="35.0" layoutY="168.0" prefHeight="40.0" prefWidth="200.0">
-              <buttons>
-                <Button mnemonicParsing="false" onAction="#handleEasyBtn" text="Easy" />
-                  <Button mnemonicParsing="false" onAction="#handleMediumBtn" text="Medium" />
-                  <Button mnemonicParsing="false" onAction="#handleHardBtn" text="Hard" />
-              </buttons>
-            </ButtonBar>
-            <TextField fx:id="counter" layoutX="64.0" layoutY="136.0" />
+            <TextField fx:id="counter" layoutX="7.0" layoutY="2.0" prefHeight="25.0" prefWidth="29.0" />
+            <Pane fx:id="btnPane" layoutX="109.0" layoutY="177.0" prefHeight="47.0" prefWidth="383.0">
+               <children>
+                  <ButtonBar prefHeight="40.0" prefWidth="200.0">
+                    <buttons>
+                      <Button mnemonicParsing="false" onAction="#handleEasyBtn" text="Easy" />
+                        <Button mnemonicParsing="false" onAction="#handleMediumBtn" text="Medium" />
+                        <Button mnemonicParsing="false" onAction="#handleHardBtn" text="Hard" />
+                    </buttons>
+                  </ButtonBar>
+               </children>
+            </Pane>
+            <Button fx:id="stopBtn" layoutX="7.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleStopBtn" text="Stop" />
          </children>
       </Pane>
    </children>

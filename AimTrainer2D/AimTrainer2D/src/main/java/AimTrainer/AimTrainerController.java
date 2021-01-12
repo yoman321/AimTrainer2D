@@ -26,9 +26,13 @@ import javafx.scene.control.TextField;
  */
 public class AimTrainerController{
     
-    //Create variables
+    //Create FXML variables
     @FXML private Pane pane;
     @FXML private TextField counter;
+    @FXML private Pane btnPane;
+    @FXML private Button stopBtn;
+    
+    //Create controller variables
     private int clickedCount = 0;
     private int radiusArrayCount = 0;
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
@@ -38,28 +42,37 @@ public class AimTrainerController{
     private boolean running = true;
     private int threadDelayTime = 0;
     
-    //Initialize values
+    //Initialize 
     public void initialize(){
         counter.setEditable(false);
+        stopBtn.setVisible(false);
     }
+    
     //Trainer modes buttons
     public void handleEasyBtn(){
         threadDelayTime = 3;
         executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, threadDelayTime, TimeUnit.SECONDS);   
+        btnPane.setVisible(false);
+        stopBtn.setVisible(true);
     }
     public void handleMediumBtn(){
         threadDelayTime = 2;
         executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, threadDelayTime, TimeUnit.SECONDS);   
+        btnPane.setVisible(false);
+        stopBtn.setVisible(true);
     }
     public void handleHardBtn(){
         threadDelayTime = 1;
         executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, threadDelayTime, TimeUnit.SECONDS);   
+        btnPane.setVisible(false);
+        stopBtn.setVisible(true);
     }
     
     //Stop trainer button
     public void handleStopBtn(){
         out.println("something");//test
         running = false;
+        btnPane.setVisible(true);
         executor.shutdownNow();
     }
     
