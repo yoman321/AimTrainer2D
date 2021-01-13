@@ -5,3 +5,6 @@
 .mainFxmlClass {
 
 }
+#AnchorPane{
+    -fx-background-color: black;
+}

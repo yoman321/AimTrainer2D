@@ -38,11 +38,11 @@ public class AimTrainerController{
     private int clickedCount = 0;
     private int radiusArrayCount = 0;
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-    private ExecutorService stopExecutor = Executors.newFixedThreadPool(1);
     private DotsAnimation dotsAnimation = new DotsAnimation();
     private ArrayList<Double> cordsArray = new ArrayList<>();
     private boolean running = true;
     private int threadDelayTime = 0;
+    private int lifeCount = 0;
     
     //Initialize 
     public void initialize(){
@@ -97,20 +97,20 @@ public class AimTrainerController{
         
         //Create datafield
         private Screen screen = Screen.getPrimary();
-        private Rectangle2D bounds = screen.getVisualBounds();
-        private final double MAX_RADIUS = 45;
+        private final double MAX_RADIUS = 70;
         private final double SUM_RADIUS = 90;
         private boolean avCords = false;
-        double xPos = ThreadLocalRandom.current().nextDouble(45, bounds.getWidth()-45);
-        double yPos = ThreadLocalRandom.current().nextDouble(45, bounds.getHeight()-45);
+        private double xPos = 0;
+        private double yPos = 0;
         private Thread thread = new Thread();
+        private long speed = 5;
         
         //aimTrainerTarget animation method
         public synchronized void animationEffect(){
-            
+             
             //Create targets cooridnates
-            xPos = ThreadLocalRandom.current().nextDouble(45, bounds.getWidth()-45);
-            yPos = ThreadLocalRandom.current().nextDouble(45, bounds.getHeight()-45);
+            xPos = ThreadLocalRandom.current().nextDouble(45, pane.getPrefWidth()-45);
+            yPos = ThreadLocalRandom.current().nextDouble(45, pane.getPrefHeight()-45);
 
             
             
@@ -124,8 +124,8 @@ public class AimTrainerController{
                         avCords = false;
                     }
                 }
-                xPos = ThreadLocalRandom.current().nextDouble(45, bounds.getWidth()-45);
-                yPos = ThreadLocalRandom.current().nextDouble(45, bounds.getHeight()-45);
+                xPos = ThreadLocalRandom.current().nextDouble(45, pane.getPrefWidth()-45);
+                yPos = ThreadLocalRandom.current().nextDouble(45, pane.getPrefHeight()-45);
             }
             //Add cords to array and create target
             cordsArray.add(xPos);
@@ -149,42 +149,36 @@ public class AimTrainerController{
                     try{
                         double x = 0;
                         double y = 0;
-                        while ((x < MAX_RADIUS && y <MAX_RADIUS) && running){
-                            x += 0.2121;
-                            y += 0.2121;
+                        while ((x < MAX_RADIUS && y <MAX_RADIUS) && running && lifeCount!=3){
+                            x += 0.1;
+                            y += 0.1;
                             final double finalX = x;
                             final double finalY = y;
                             Platform.runLater(() -> aimTrainerTarget.setFitWidth(finalX));
                             Platform.runLater(() -> aimTrainerTarget.setFitHeight(finalY));
-                            Thread.sleep(35);
+                            Thread.sleep(speed);
                         }
-                        while ((x > 0.3 && y > 0.3) && running){
+                        while ((x > 0.3 && y > 0.3) && running && lifeCount!=3){
                             x -= 0.2121;
                             y -= 0.2121;
                             final double finalX = x;
                             final double finalY = y;
                             Platform.runLater(() -> aimTrainerTarget.setFitWidth(finalX));
                             Platform.runLater(() -> aimTrainerTarget.setFitHeight(finalY));
-                            Thread.sleep(35);
-                            
-                            //Remove target if x = y = 0
-//                            if (x==1 || y==1){
-//                                pane.getChildren().remove(aimTrainerTarget);
-//                                for (int i=0, j=i=1; i<cordsArray.size(); i+=2){
-//                                if (cordsArray.get(i)==xPos && cordsArray.get(j)==yPos){
-//                                    cordsArray.remove(i);
-//                                    cordsArray.remove(j);
-//                                }
-//                            }
-//                            }
+                            Thread.sleep(speed);
                         }
                         //Check if stop button has been clicked
+                        if (lifeCount == 3){
+                            thread.interrupt();
+                            executor.shutdownNow();
+                        }
                         if (!running){
                             thread.interrupt();
                             out.println("interrupt");
                         }
                         //Remove aimTrainerTarget and cords if target shrink to 0
                         if (x <= 0.3 || y <= 0.3){
+                            lifeCount++;
                             out.println("exit");
                             Platform.runLater(() -> pane.getChildren().remove(aimTrainerTarget));
                             for (int i=0, j=i=1; i<cordsArray.size(); i+=2){

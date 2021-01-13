@@ -31,12 +31,16 @@ public class AimTrainerMain extends Application {
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
         
-        Scene scene = new Scene(root, 600, 400); 
+        //Create Scene
+        Scene scene = new Scene(root, 1000, 700); 
         
+         //Add css style
+         scene.getStylesheets().add("/styles/AimTrainerCSS.css");
+        
+        //Create stage
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-        primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 
