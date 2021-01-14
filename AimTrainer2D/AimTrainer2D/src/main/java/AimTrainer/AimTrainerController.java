@@ -22,6 +22,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 /**
  *
  * @author luoph
@@ -33,6 +35,9 @@ public class AimTrainerController{
     @FXML private TextField counter;
     @FXML private Pane btnPane;
     @FXML private Button stopBtn;
+    @FXML private Rectangle healthBar1;
+    @FXML private Rectangle healthBar2;
+    @FXML private Rectangle healthBar3;
     
     //Create controller variables
     private int clickedCount = 0;
@@ -42,7 +47,7 @@ public class AimTrainerController{
     private ArrayList<Double> cordsArray = new ArrayList<>();
     private boolean running = true;
     private int threadDelayTime = 0;
-    private int lifeCount = 0;
+    private int lifeCount = 3;
     
     //Initialize 
     public void initialize(){
@@ -96,7 +101,7 @@ public class AimTrainerController{
     private class DotsAnimation{
         
         //Create datafield
-        private Screen screen = Screen.getPrimary();
+//        private Screen screen = Screen.getPrimary();
         private final double MAX_RADIUS = 70;
         private final double SUM_RADIUS = 90;
         private boolean avCords = false;
@@ -149,7 +154,7 @@ public class AimTrainerController{
                     try{
                         double x = 0;
                         double y = 0;
-                        while ((x < MAX_RADIUS && y <MAX_RADIUS) && running && lifeCount!=3){
+                        while ((x < MAX_RADIUS && y <MAX_RADIUS) && running && lifeCount!=0){
                             x += 0.1;
                             y += 0.1;
                             final double finalX = x;
@@ -158,7 +163,7 @@ public class AimTrainerController{
                             Platform.runLater(() -> aimTrainerTarget.setFitHeight(finalY));
                             Thread.sleep(speed);
                         }
-                        while ((x > 0.3 && y > 0.3) && running && lifeCount!=3){
+                        while ((x > 0.3 && y > 0.3) && running && lifeCount!=0){
                             x -= 0.2121;
                             y -= 0.2121;
                             final double finalX = x;
@@ -168,18 +173,29 @@ public class AimTrainerController{
                             Thread.sleep(speed);
                         }
                         //Check if stop button has been clicked
-                        if (lifeCount == 3){
+                        if (lifeCount == 0){
                             thread.interrupt();
                             executor.shutdownNow();
                         }
                         if (!running){
                             thread.interrupt();
-                            out.println("interrupt");
+                            out.println("interrupt");//test
                         }
                         //Remove aimTrainerTarget and cords if target shrink to 0
                         if (x <= 0.3 || y <= 0.3){
-                            lifeCount++;
-                            out.println("exit");
+                            lifeCount--;
+                            
+                            //Remove health bar
+                            if (lifeCount == 2){
+                                Platform.runLater(() -> healthBar3.setFill(Color.BLACK));
+                            }
+                            if (lifeCount == 1){
+                                Platform.runLater(() -> healthBar2.setFill(Color.BLACK));
+                            }
+                            if (lifeCount == 0){
+                                Platform.runLater(() -> healthBar1.setFill(Color.BLACK));
+                            }
+                            out.println("exit");//test
                             Platform.runLater(() -> pane.getChildren().remove(aimTrainerTarget));
                             for (int i=0, j=i=1; i<cordsArray.size(); i+=2){
                                 if (cordsArray.get(i)==xPos && cordsArray.get(j)==yPos){

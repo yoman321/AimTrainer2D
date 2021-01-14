@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
 
 <AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="1000.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AimTrainer.AimTrainerController">
     <stylesheets>
@@ -14,7 +15,7 @@
    <children>
       <Pane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="1000.0">
          <children>
-            <TextField fx:id="counter" layoutX="7.0" layoutY="2.0" prefHeight="25.0" prefWidth="29.0" />
+            <TextField fx:id="counter" layoutX="957.0" layoutY="14.0" prefHeight="25.0" prefWidth="29.0" />
             <Pane fx:id="btnPane" layoutX="109.0" layoutY="177.0" prefHeight="47.0" prefWidth="383.0">
                <children>
                   <ButtonBar prefHeight="40.0" prefWidth="200.0">
@@ -27,6 +28,9 @@
                </children>
             </Pane>
             <Button fx:id="stopBtn" layoutX="7.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleStopBtn" text="Stop" />
+            <Rectangle fx:id="healthBar1" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="7.0" layoutX="27.0" layoutY="19.0" stroke="BLACK" strokeType="INSIDE" width="56.0" />
+            <Rectangle fx:id="healthBar2" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="7.0" layoutX="91.0" layoutY="19.0" stroke="BLACK" strokeType="INSIDE" width="56.0" />
+            <Rectangle fx:id="healthBar3" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="7.0" layoutX="155.0" layoutY="19.0" stroke="BLACK" strokeType="INSIDE" width="56.0" />
          </children>
       </Pane>
    </children>
