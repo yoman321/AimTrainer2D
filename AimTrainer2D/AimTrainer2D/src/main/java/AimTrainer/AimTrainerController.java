@@ -61,18 +61,21 @@ public class AimTrainerController{
         executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, threadDelayTime, TimeUnit.SECONDS);   
         btnPane.setVisible(false);
         stopBtn.setVisible(true);
+        running = true;
     }
     public void handleMediumBtn(){
         threadDelayTime = 2;
         executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, threadDelayTime, TimeUnit.SECONDS);   
         btnPane.setVisible(false);
         stopBtn.setVisible(true);
+        running = true;
     }
     public void handleHardBtn(){
         threadDelayTime = 1;
         executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, threadDelayTime, TimeUnit.SECONDS);   
         btnPane.setVisible(false);
         stopBtn.setVisible(true);
+        running = true;
     }
     
     //Stop trainer button
@@ -80,7 +83,8 @@ public class AimTrainerController{
         out.println("something");//test
         running = false;
         btnPane.setVisible(true);
-        executor.shutdownNow();
+        executor.shutdown();
+        executor = Executors.newScheduledThreadPool(1);
     }
     
     //Circle animation task
