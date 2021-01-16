@@ -62,6 +62,7 @@ public class AimTrainerController{
         btnPane.setVisible(false);
         stopBtn.setVisible(true);
         running = true;
+        resetHealthBar();
     }
     public void handleMediumBtn(){
         threadDelayTime = 2;
@@ -69,6 +70,7 @@ public class AimTrainerController{
         btnPane.setVisible(false);
         stopBtn.setVisible(true);
         running = true;
+        resetHealthBar();
     }
     public void handleHardBtn(){
         threadDelayTime = 1;
@@ -76,17 +78,26 @@ public class AimTrainerController{
         btnPane.setVisible(false);
         stopBtn.setVisible(true);
         running = true;
+        resetHealthBar();
     }
-    
     //Stop trainer button
     public void handleStopBtn(){
         out.println("something");//test
         running = false;
-        btnPane.setVisible(true);
         executor.shutdown();
+        resetThread();
+    }
+    //Resset health bar after each game
+    public void resetHealthBar(){
+        Platform.runLater(() -> healthBar1.setFill(Color.RED));
+        Platform.runLater(() -> healthBar2.setFill(Color.RED));
+        Platform.runLater(() -> healthBar3.setFill(Color.RED));
+    }
+    //Reset threads after each game
+    public void resetThread(){
+        btnPane.setVisible(true);
         executor = Executors.newScheduledThreadPool(1);
     }
-    
     //Circle animation task
     private class DotsAnimationTask implements Runnable{
         @Override
@@ -179,10 +190,13 @@ public class AimTrainerController{
                         //Check if stop button has been clicked
                         if (lifeCount == 0){
                             thread.interrupt();
+                            Platform.runLater(() -> pane.getChildren().remove(aimTrainerTarget));
                             executor.shutdownNow();
+                            resetThread();
                         }
                         if (!running){
                             thread.interrupt();
+                            Platform.runLater(() -> pane.getChildren().remove(aimTrainerTarget));
                             out.println("interrupt");//test
                         }
                         //Remove aimTrainerTarget and cords if target shrink to 0

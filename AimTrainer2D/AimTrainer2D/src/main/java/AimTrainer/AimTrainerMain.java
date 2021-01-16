@@ -28,8 +28,8 @@ public class AimTrainerMain extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("AimTrainerFXML.fxml"));
         
         //Get full screen size
-        Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
+//        Screen screen = Screen.getPrimary();
+//        Rectangle2D bounds = screen.getVisualBounds();
         
         //Create Scene
         Scene scene = new Scene(root, 1000, 700); 
