@@ -13,21 +13,21 @@
         <URL value="@/styles/AimTrainerCSS.css" />
     </stylesheets>
    <children>
-      <Pane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="1000.0">
+      <Pane fx:id="btnPane" prefHeight="700.0" prefWidth="1000.0">
          <children>
-            <TextField fx:id="counter" layoutX="957.0" layoutY="14.0" prefHeight="25.0" prefWidth="29.0" />
-            <Pane fx:id="btnPane" layoutX="109.0" layoutY="177.0" prefHeight="47.0" prefWidth="383.0">
-               <children>
-                  <ButtonBar prefHeight="40.0" prefWidth="200.0">
-                    <buttons>
-                      <Button mnemonicParsing="false" onAction="#handleEasyBtn" text="Easy" />
-                        <Button mnemonicParsing="false" onAction="#handleMediumBtn" text="Medium" />
-                        <Button mnemonicParsing="false" onAction="#handleHardBtn" text="Hard" />
-                    </buttons>
-                  </ButtonBar>
-               </children>
-            </Pane>
-            <Button fx:id="stopBtn" layoutX="7.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleStopBtn" text="Stop" />
+            <ButtonBar prefHeight="40.0" prefWidth="200.0">
+              <buttons>
+                <Button mnemonicParsing="false" onAction="#handleEasyBtn" text="Easy" />
+                  <Button mnemonicParsing="false" onAction="#handleMediumBtn" text="Medium" />
+                  <Button mnemonicParsing="false" onAction="#handleHardBtn" text="Hard" />
+              </buttons>
+            </ButtonBar>
+         </children>
+      </Pane>
+      <Pane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="1000.0" stylesheets="@../styles/AimTrainerCSS.css">
+         <children>
+            <Button fx:id="stopBtn" layoutY="675.0" mnemonicParsing="false" onAction="#handleStopBtn" text="Stop" />
+            <TextField fx:id="counter" layoutX="898.0" layoutY="10.0" prefHeight="25.0" prefWidth="88.0" />
             <Rectangle fx:id="healthBar1" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="7.0" layoutX="27.0" layoutY="19.0" stroke="BLACK" strokeType="INSIDE" width="56.0" />
             <Rectangle fx:id="healthBar2" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="7.0" layoutX="91.0" layoutY="19.0" stroke="BLACK" strokeType="INSIDE" width="56.0" />
             <Rectangle fx:id="healthBar3" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="7.0" layoutX="155.0" layoutY="19.0" stroke="BLACK" strokeType="INSIDE" width="56.0" />

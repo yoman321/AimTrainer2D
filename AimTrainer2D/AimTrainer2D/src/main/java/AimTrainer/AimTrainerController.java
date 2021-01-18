@@ -51,8 +51,7 @@ public class AimTrainerController{
     
     //Initialize 
     public void initialize(){
-        counter.setEditable(false);
-        stopBtn.setVisible(false);
+        pane.setVisible(false);
     }
     
     //Trainer modes buttons
@@ -63,6 +62,7 @@ public class AimTrainerController{
         stopBtn.setVisible(true);
         running = true;
         resetHealthBar();
+        btnPaneToPane();
     }
     public void handleMediumBtn(){
         threadDelayTime = 2;
@@ -71,6 +71,7 @@ public class AimTrainerController{
         stopBtn.setVisible(true);
         running = true;
         resetHealthBar();
+        btnPaneToPane();
     }
     public void handleHardBtn(){
         threadDelayTime = 1;
@@ -79,6 +80,16 @@ public class AimTrainerController{
         stopBtn.setVisible(true);
         running = true;
         resetHealthBar();
+        btnPaneToPane();
+    }
+    //Rotate panes
+    public void btnPaneToPane(){
+        btnPane.setVisible(false);
+        pane.setVisible(true);
+    }
+    public void paneToBtnPane(){
+         btnPane.setVisible(true);
+        pane.setVisible(false);
     }
     //Stop trainer button
     public void handleStopBtn(){
@@ -86,6 +97,7 @@ public class AimTrainerController{
         running = false;
         executor.shutdown();
         resetThread();
+        paneToBtnPane();
     }
     //Resset health bar after each game
     public void resetHealthBar(){
@@ -186,6 +198,7 @@ public class AimTrainerController{
                             Platform.runLater(() -> aimTrainerTarget.setFitWidth(finalX));
                             Platform.runLater(() -> aimTrainerTarget.setFitHeight(finalY));
                             Thread.sleep(speed);
+                            
                         }
                         //Check if stop button has been clicked
                         if (lifeCount == 0){
@@ -193,6 +206,7 @@ public class AimTrainerController{
                             Platform.runLater(() -> pane.getChildren().remove(aimTrainerTarget));
                             executor.shutdownNow();
                             resetThread();
+                            paneToBtnPane();
                         }
                         if (!running){
                             thread.interrupt();
@@ -234,7 +248,8 @@ public class AimTrainerController{
             aimTrainerTarget.setOnMousePressed(e -> {
                 pane.getChildren().remove(aimTrainerTarget);
                 clickedCount++;
-                counter.setText(String.valueOf(clickedCount));
+                thread.interrupt();
+                counter.setText(String.valueOf("Counter: "+clickedCount));
             });   
             
         }

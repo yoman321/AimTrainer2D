@@ -33,10 +33,7 @@ public class AimTrainerMain extends Application {
         
         //Create Scene
         Scene scene = new Scene(root, 1000, 700); 
-        
-         //Add css style
-         scene.getStylesheets().add("/styles/AimTrainerCSS.css");
-        
+            
         //Create stage
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
