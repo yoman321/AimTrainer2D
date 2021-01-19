@@ -31,7 +31,7 @@ import javafx.scene.shape.Rectangle;
 public class AimTrainerController{
     
     //Create FXML variables
-    @FXML private Pane pane;
+    @FXML private Pane gamePane;
     @FXML private TextField counter;
     @FXML private Pane btnPane;
     @FXML private Button stopBtn;
@@ -42,7 +42,7 @@ public class AimTrainerController{
     //Create controller variables
     private int clickedCount = 0;
     private int radiusArrayCount = 0;
-    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
     private DotsAnimation dotsAnimation = new DotsAnimation();
     private ArrayList<Double> cordsArray = new ArrayList<>();
     private boolean running = true;
@@ -51,7 +51,7 @@ public class AimTrainerController{
     
     //Initialize 
     public void initialize(){
-        pane.setVisible(false);
+        gamePane.setVisible(false);
     }
     
     //Trainer modes buttons
@@ -62,7 +62,7 @@ public class AimTrainerController{
         stopBtn.setVisible(true);
         running = true;
         resetHealthBar();
-        btnPaneToPane();
+        btnPaneToGamePane();
     }
     public void handleMediumBtn(){
         threadDelayTime = 2;
@@ -71,7 +71,7 @@ public class AimTrainerController{
         stopBtn.setVisible(true);
         running = true;
         resetHealthBar();
-        btnPaneToPane();
+        btnPaneToGamePane();
     }
     public void handleHardBtn(){
         threadDelayTime = 1;
@@ -80,36 +80,9 @@ public class AimTrainerController{
         stopBtn.setVisible(true);
         running = true;
         resetHealthBar();
-        btnPaneToPane();
+        btnPaneToGamePane();
     }
-    //Rotate panes
-    public void btnPaneToPane(){
-        btnPane.setVisible(false);
-        pane.setVisible(true);
-    }
-    public void paneToBtnPane(){
-         btnPane.setVisible(true);
-        pane.setVisible(false);
-    }
-    //Stop trainer button
-    public void handleStopBtn(){
-        out.println("something");//test
-        running = false;
-        executor.shutdown();
-        resetThread();
-        paneToBtnPane();
-    }
-    //Resset health bar after each game
-    public void resetHealthBar(){
-        Platform.runLater(() -> healthBar1.setFill(Color.RED));
-        Platform.runLater(() -> healthBar2.setFill(Color.RED));
-        Platform.runLater(() -> healthBar3.setFill(Color.RED));
-    }
-    //Reset threads after each game
-    public void resetThread(){
-        btnPane.setVisible(true);
-        executor = Executors.newScheduledThreadPool(1);
-    }
+    
     //Circle animation task
     private class DotsAnimationTask implements Runnable{
         @Override
@@ -141,8 +114,8 @@ public class AimTrainerController{
         public synchronized void animationEffect(){
              
             //Create targets cooridnates
-            xPos = ThreadLocalRandom.current().nextDouble(45, pane.getPrefWidth()-45);
-            yPos = ThreadLocalRandom.current().nextDouble(45, pane.getPrefHeight()-45);
+            xPos = ThreadLocalRandom.current().nextDouble(45, gamePane.getPrefWidth()-45);
+            yPos = ThreadLocalRandom.current().nextDouble(45, gamePane.getPrefHeight()-45);
 
             
             
@@ -156,8 +129,8 @@ public class AimTrainerController{
                         avCords = false;
                     }
                 }
-                xPos = ThreadLocalRandom.current().nextDouble(45, pane.getPrefWidth()-45);
-                yPos = ThreadLocalRandom.current().nextDouble(45, pane.getPrefHeight()-45);
+                xPos = ThreadLocalRandom.current().nextDouble(45, gamePane.getPrefWidth()-45);
+                yPos = ThreadLocalRandom.current().nextDouble(45, gamePane.getPrefHeight()-45);
             }
             //Add cords to array and create target
             cordsArray.add(xPos);
@@ -172,7 +145,7 @@ public class AimTrainerController{
             
             
             //Add target to pane
-            pane.getChildren().add(aimTrainerTarget);
+            gamePane.getChildren().add(aimTrainerTarget);
             
             //Create animation
             thread = new Thread(new Runnable() {
@@ -182,8 +155,11 @@ public class AimTrainerController{
                         double x = 0;
                         double y = 0;
                         while ((x < MAX_RADIUS && y <MAX_RADIUS) && running && lifeCount!=0){
-                            x += 0.1;
-                            y += 0.1;
+                            aimTrainerTarget.setOnMousePressed(e -> {
+                                onclickTarget(aimTrainerTarget, thread);
+                            });
+                            x += 0.2121;
+                            y += 0.2121;
                             final double finalX = x;
                             final double finalY = y;
                             Platform.runLater(() -> aimTrainerTarget.setFitWidth(finalX));
@@ -191,6 +167,9 @@ public class AimTrainerController{
                             Thread.sleep(speed);
                         }
                         while ((x > 0.3 && y > 0.3) && running && lifeCount!=0){
+                            aimTrainerTarget.setOnMousePressed(e -> {
+                                onclickTarget(aimTrainerTarget, thread);
+                            });
                             x -= 0.2121;
                             y -= 0.2121;
                             final double finalX = x;
@@ -203,14 +182,15 @@ public class AimTrainerController{
                         //Check if stop button has been clicked
                         if (lifeCount == 0){
                             thread.interrupt();
-                            Platform.runLater(() -> pane.getChildren().remove(aimTrainerTarget));
+                            Platform.runLater(() -> gamePane.getChildren().remove(aimTrainerTarget));
                             executor.shutdownNow();
                             resetThread();
                             paneToBtnPane();
+                            out.println("'int");
                         }
                         if (!running){
                             thread.interrupt();
-                            Platform.runLater(() -> pane.getChildren().remove(aimTrainerTarget));
+                            Platform.runLater(() -> gamePane.getChildren().remove(aimTrainerTarget));
                             out.println("interrupt");//test
                         }
                         //Remove aimTrainerTarget and cords if target shrink to 0
@@ -228,7 +208,7 @@ public class AimTrainerController{
                                 Platform.runLater(() -> healthBar1.setFill(Color.BLACK));
                             }
                             out.println("exit");//test
-                            Platform.runLater(() -> pane.getChildren().remove(aimTrainerTarget));
+                            Platform.runLater(() -> gamePane.getChildren().remove(aimTrainerTarget));
                             for (int i=0, j=i=1; i<cordsArray.size(); i+=2){
                                 if (cordsArray.get(i)==xPos && cordsArray.get(j)==yPos){
                                     cordsArray.remove(i);
@@ -240,19 +220,58 @@ public class AimTrainerController{
                     catch(InterruptedException ex){
                         ex.getStackTrace();
                     }
+                    
                 }
             });
             thread.start();
             
             //Make target disappear when clicked and increment clickedCount
             aimTrainerTarget.setOnMousePressed(e -> {
-                pane.getChildren().remove(aimTrainerTarget);
+                gamePane.getChildren().remove(aimTrainerTarget);
                 clickedCount++;
                 thread.interrupt();
+                out.println("stopped");//test
                 counter.setText(String.valueOf("Counter: "+clickedCount));
             });   
             
         }
         
+        
+    }
+    //Rotate panes
+    public void btnPaneToGamePane(){
+        btnPane.setVisible(false);
+        gamePane.setVisible(true);
+    }
+    public void paneToBtnPane(){
+         btnPane.setVisible(true);
+        gamePane.setVisible(false);
+    }
+    //Stop trainer button
+    public void handleStopBtn(){
+        out.println("something");//test
+        running = false;
+        executor.shutdown();
+        resetThread();
+        paneToBtnPane();
+    }
+    //Resset health bar after each game
+    public void resetHealthBar(){
+        Platform.runLater(() -> healthBar1.setFill(Color.RED));
+        Platform.runLater(() -> healthBar2.setFill(Color.RED));
+        Platform.runLater(() -> healthBar3.setFill(Color.RED));
+    }
+    //Reset threads after each game
+    public void resetThread(){
+        btnPane.setVisible(true);
+        executor = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
+    }
+    //Create onclick target method
+    public void onclickTarget(ImageView aimTrainerTarget, Thread thread){
+        gamePane.getChildren().remove(aimTrainerTarget);
+        clickedCount++;
+        thread.interrupt();
+        out.println("stopped");//test
+        counter.setText(String.valueOf("Counter: "+clickedCount));
     }
 }

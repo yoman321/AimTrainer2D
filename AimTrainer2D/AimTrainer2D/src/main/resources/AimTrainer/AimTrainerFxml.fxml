@@ -24,7 +24,7 @@
             </ButtonBar>
          </children>
       </Pane>
-      <Pane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="1000.0" stylesheets="@../styles/AimTrainerCSS.css">
+      <Pane fx:id="gamePane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="1000.0" stylesheets="@../styles/AimTrainerCSS.css">
          <children>
             <Button fx:id="stopBtn" layoutY="675.0" mnemonicParsing="false" onAction="#handleStopBtn" text="Stop" />
             <TextField fx:id="counter" layoutX="898.0" layoutY="10.0" prefHeight="25.0" prefWidth="88.0" />
