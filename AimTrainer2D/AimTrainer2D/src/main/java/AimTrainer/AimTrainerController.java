@@ -73,7 +73,7 @@ public class AimTrainerController{
     }
     //Stop trainer button
     public void handleStopBtn(){
-        out.println("something");//test
+        out.println("nothing");//test
         running = false;
         gamePaneToBtnPane();
         endGame();
