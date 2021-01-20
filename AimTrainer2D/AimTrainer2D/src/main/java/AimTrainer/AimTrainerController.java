@@ -34,7 +34,6 @@ public class AimTrainerController{
     @FXML private Pane gamePane;
     @FXML private TextField counter;
     @FXML private Pane btnPane;
-    @FXML private Button stopBtn;
     @FXML private Rectangle healthBar1;
     @FXML private Rectangle healthBar2;
     @FXML private Rectangle healthBar3;
@@ -46,7 +45,6 @@ public class AimTrainerController{
     private DotsAnimation dotsAnimation = new DotsAnimation();
     private ArrayList<Double> cordsArray = new ArrayList<>();
     private boolean running = true;
-    private int threadDelayTime = 0;
     private int lifeCount = 3;
     
     //Initialize 
@@ -56,20 +54,20 @@ public class AimTrainerController{
     
     //Trainer modes buttons
     public void handleEasyBtn(){
-        threadDelayTime = 3;
-        executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, threadDelayTime, TimeUnit.SECONDS);   
+        executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, 1, TimeUnit.SECONDS);   
         startGame();
         btnPaneToGamePane();
     }
     public void handleMediumBtn(){
-        threadDelayTime = 2;
-        executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, threadDelayTime, TimeUnit.SECONDS);   
+        executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, 1, TimeUnit.SECONDS);  
+        executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, 1, TimeUnit.SECONDS);   
         startGame();
         btnPaneToGamePane();
     }
     public void handleHardBtn(){
-        threadDelayTime = 1;
-        executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, threadDelayTime, TimeUnit.SECONDS);   
+        executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, 1, TimeUnit.SECONDS);   
+        executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, 1, TimeUnit.SECONDS);
+        executor.scheduleWithFixedDelay(new DotsAnimationTask(), 0, 1, TimeUnit.SECONDS);
         startGame();
         btnPaneToGamePane();
     }
