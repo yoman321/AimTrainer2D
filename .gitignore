@@ -1,1 +1,6 @@
 /AimTrainer2D/AimTrainer2D/build/
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build

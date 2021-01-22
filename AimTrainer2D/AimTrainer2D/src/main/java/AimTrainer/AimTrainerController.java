@@ -41,7 +41,7 @@ public class AimTrainerController{
     //Create controller variables
     private int clickedCount = 0;
     private int radiusArrayCount = 0;
-    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(16);
+    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
     private DotsAnimation dotsAnimation = new DotsAnimation();
     private ArrayList<Double> cordsArray = new ArrayList<>();
     private boolean running = true;
@@ -97,7 +97,6 @@ public class AimTrainerController{
     private class DotsAnimation{
         
         //Create datafield
-//        private Screen screen = Screen.getPrimary();
         private final double MAX_RADIUS = 70;
         private final double SUM_RADIUS = 90;
         private boolean avCords = false;
@@ -220,7 +219,7 @@ public class AimTrainerController{
                 clickedCount++;
                 thread.interrupt();
                 out.println("stopped");//test
-                counter.setText(String.valueOf("Counter: "+clickedCount));
+                counter.setText(String.valueOf(clickedCount));
             });   
         }
     }
@@ -236,24 +235,16 @@ public class AimTrainerController{
     //Start game tasks
     public void startGame(){
         running = true;
+        counter.setText(String.valueOf(0));
         lifeCount = 3;
-        counter.setText("Counter: ");
         clickedCount = 0;
     }
     //End threads after each game
     public void endGame(){
         executor.shutdown();
-        executor = Executors.newScheduledThreadPool(1);
+        executor = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
         Platform.runLater(() -> healthBar1.setFill(Color.RED));
         Platform.runLater(() -> healthBar2.setFill(Color.RED));
         Platform.runLater(() -> healthBar3.setFill(Color.RED));
     }
-//    //Create onclick target method
-//    public void onclickTarget(ImageView aimTrainerTarget, Thread thread){
-//        gamePane.getChildren().remove(aimTrainerTarget);
-//        clickedCount++;
-//        thread.interrupt();
-//        out.println("stopped");//test
-//        counter.setText(String.valueOf("Counter: "+clickedCount));
-//    }
 }

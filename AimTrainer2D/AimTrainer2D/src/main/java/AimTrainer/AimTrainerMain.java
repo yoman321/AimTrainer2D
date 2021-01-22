@@ -25,7 +25,7 @@ public class AimTrainerMain extends Application {
     
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("AimTrainerFXML.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("LoginScreenFXML.fxml"));
         
         //Get full screen size
 //        Screen screen = Screen.getPrimary();
