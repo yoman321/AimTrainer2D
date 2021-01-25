@@ -24,6 +24,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 /**
  *
  * @author luoph
@@ -32,7 +33,7 @@ public class AimTrainerController{
     
     //Create FXML variables
     @FXML private Pane gamePane;
-    @FXML private TextField counter;
+    @FXML private Text counter;
     @FXML private Pane btnPane;
     @FXML private Rectangle healthBar1;
     @FXML private Rectangle healthBar2;

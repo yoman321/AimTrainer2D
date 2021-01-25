@@ -7,14 +7,14 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AimTrainer.LoginScreenController">
    <children>
-      <Pane fx:id="loginScreenPane" prefHeight="700.0" prefWidth="1000.0">
+      <Pane fx:id="loginScreenPane" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: BLACK;">
          <children>
-            <Text layoutX="282.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aim Trainer 2D" wrappingWidth="436.13671875">
+            <Text fill="WHITE" layoutX="282.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aim Trainer 2D" wrappingWidth="436.13671875">
                <font>
                   <Font name="System Bold" size="61.0" />
                </font>
             </Text>
-            <Text fx:id="proceedText" layoutX="422.0" layoutY="454.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to Proceed">
+            <Text fx:id="proceedText" fill="WHITE" layoutX="422.0" layoutY="454.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to Proceed">
                <font>
                   <Font size="22.0" />
                </font>
