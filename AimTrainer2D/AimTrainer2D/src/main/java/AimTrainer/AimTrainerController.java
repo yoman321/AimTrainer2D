@@ -41,7 +41,6 @@ public class AimTrainerController{
     
     //Create controller variables
     private int clickedCount = 0;
-    private int radiusArrayCount = 0;
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
     private DotsAnimation dotsAnimation = new DotsAnimation();
     private ArrayList<Double> cordsArray = new ArrayList<>();
@@ -73,8 +72,7 @@ public class AimTrainerController{
         btnPaneToGamePane();
     }
     //Stop trainer button
-    public void handleStopBtn(){
-        out.println("something");//test
+    public void handleStopBtn(){     
         running = false;
         gamePaneToBtnPane();
         endGame();
@@ -100,7 +98,7 @@ public class AimTrainerController{
         //Create datafield
         private final double MAX_RADIUS = 70;
         private final double SUM_RADIUS = 90;
-        private boolean avCords = false;
+        private boolean ovCords = true;
         private double xPos = 0;
         private double yPos = 0;
         private long speed = 5;
@@ -114,22 +112,24 @@ public class AimTrainerController{
 
             
             
-            //Check for overlapping aimTrainerTarget
-            while (avCords == false){
-                avCords = true;
-                for (int i=0, j=i+1; i<cordsArray.size(); i+=2){
+            //Check for overlapping targets
+            while (ovCords){
+                ovCords = false;
+                for (int i=0, j=i+1; i<cordsArray.size(); i+=2, j+=2){
                     double distance = Math.sqrt(Math.pow(xPos - cordsArray.get(i), 2) + Math.pow(yPos - cordsArray.get(j), 2));
                     
                     if (distance < SUM_RADIUS){
-                        avCords = false;
+                        ovCords = true;
+                        xPos = ThreadLocalRandom.current().nextDouble(45, gamePane.getPrefWidth()-45);
+                        yPos = ThreadLocalRandom.current().nextDouble(45, gamePane.getPrefHeight()-45);
+                    }
+                    else{
+                        //Add cords to array and create target
+                        cordsArray.add(xPos);
+                        cordsArray.add(yPos);
                     }
                 }
-                xPos = ThreadLocalRandom.current().nextDouble(45, gamePane.getPrefWidth()-45);
-                yPos = ThreadLocalRandom.current().nextDouble(45, gamePane.getPrefHeight()-45);
             }
-            //Add cords to array and create target
-            cordsArray.add(xPos);
-            cordsArray.add(yPos);
             
             Image aimTrainerImage = new Image("/images/AimTrainerTarget.png");
             final ImageView aimTrainerTarget = new ImageView(aimTrainerImage);
@@ -174,10 +174,10 @@ public class AimTrainerController{
                         if (!running){
                             thread.interrupt();
                             Platform.runLater(() -> gamePane.getChildren().remove(aimTrainerTarget));
-                            out.println("interrupt");//test
+                            
                         }
                         if (lifeCount == 0){
-                            out.println("'int");//test
+                            
                             thread.interrupt();
                             Platform.runLater(() -> gamePane.getChildren().remove(aimTrainerTarget));
                             endGame();
@@ -195,7 +195,7 @@ public class AimTrainerController{
                             if (lifeCount == 0){
                                 Platform.runLater(() -> healthBar1.setFill(Color.BLACK));
                             }
-                            out.println("exit");//test
+                            
                             Platform.runLater(() -> gamePane.getChildren().remove(aimTrainerTarget));
                             for (int i=0, j=i=1; i<cordsArray.size(); i+=2){
                                 if (cordsArray.get(i)==xPos && cordsArray.get(j)==yPos){
@@ -219,7 +219,7 @@ public class AimTrainerController{
                 gamePane.getChildren().remove(aimTrainerTarget);
                 clickedCount++;
                 thread.interrupt();
-                out.println("stopped");//test
+                
                 counter.setText(String.valueOf(clickedCount));
             });   
         }
